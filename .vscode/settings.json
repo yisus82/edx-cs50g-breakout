@@ -1,0 +1,12 @@
+{
+  "Lua.diagnostics.globals": [
+    "class_commons",
+    "common",
+    "love",
+    "push",
+    "gFonts",
+    "gImages",
+    "gSounds",
+    "gStateMachine"
+  ]
+}
