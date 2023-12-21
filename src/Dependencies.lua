@@ -15,6 +15,9 @@ Class = require 'lib/class'
 -- a few global constants, centralized
 require 'src/constants'
 
+-- the rectangular entity the player controls, which deflects the ball
+require 'src/Paddle'
+
 -- a basic StateMachine class which will allow us to transition to and from
 -- game states smoothly and avoid monolithic code in one file
 require 'src/StateMachine'
@@ -23,4 +26,9 @@ require 'src/StateMachine'
 -- its own update and render methods that can be called by our state machine
 -- each frame, to avoid bulky code in main.lua
 require 'src/states/Base'
+require 'src/states/Play'
 require 'src/states/Start'
+
+-- utility functions, mainly for splitting our sprite sheet into various Quads
+-- of differing sizes for paddles, balls, bricks, etc.
+require 'src/Util'

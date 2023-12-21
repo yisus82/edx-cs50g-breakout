@@ -15,7 +15,10 @@ local highlighted = 1
 -- our menu items
 local menuItems = {
   [1] = {
-    text = 'START'
+    text = 'START',
+    onSelect = function()
+      gStateMachine:change('Play')
+    end
   },
   [2] = {
     text = 'HIGH SCORES',
@@ -39,6 +42,16 @@ function Start:update(_dt)
     -- make sure the highlighted menu item doesn't exceed the size of our table
     highlighted = highlighted + 1 > #menuItems and 1 or highlighted + 1
     gSounds['paddle-hit']:play()
+  end
+
+  -- if we press enter, go into whichever menu item is selected
+  if love.keyboard.wasPressed('enter') or love.keyboard.wasPressed('return') then
+    gSounds['confirm']:play()
+
+    -- if we have a function to execute for this item, execute it
+    if menuItems[highlighted].onSelect then
+      menuItems[highlighted].onSelect()
+    end
   end
 
   -- exit game if we press escape

@@ -53,6 +53,12 @@ function love.load()
     ['particle'] = love.graphics.newImage('images/particle.png')
   }
 
+  -- Quads we will generate for all of our textures; Quads allow us
+  -- to show only part of a texture and not the entire thing
+  gQuads = {
+    ['paddles'] = GenerateQuadsPaddles(gImages['main'])
+  }
+
   -- initialize our virtual resolution, which will be rendered within our
   -- actual window no matter its dimensions
   push:setupScreen(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, WINDOW_WIDTH, WINDOW_HEIGHT, {
@@ -95,7 +101,8 @@ function love.load()
   -- 5. 'Victory' (the current level is over, with a victory jingle)
   -- 6. 'GameOver' (the player has lost; display score and allow restart)
   gStateMachine = StateMachine {
-    ['Start'] = function() return Start() end
+    ['Start'] = function() return Start() end,
+    ['Play'] = function() return Play() end,
   }
   gStateMachine:change('Start')
 
