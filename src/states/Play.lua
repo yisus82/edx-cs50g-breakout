@@ -13,8 +13,22 @@ Play = Class { __includes = Base }
   Called once when we first enter the state.
 ]]
 function Play:init()
-  self.paddle = Paddle()
+  -- in the beginning, the game is not paused
   self.paused = false
+
+  -- initialize our paddle
+  self.paddle = Paddle()
+
+  -- initialize our ball with a random skin
+  self.ball = Ball(math.random(7))
+
+  -- give the ball random starting velocity
+  self.ball.dx = math.random(-200, 200)
+  self.ball.dy = math.random(-50, -60)
+
+  -- give the ball position in the center
+  self.ball.x = VIRTUAL_WIDTH / 2 - 4
+  self.ball.y = VIRTUAL_HEIGHT - 42
 end
 
 --[[
@@ -44,6 +58,20 @@ function Play:update(dt)
 
   -- update positions based on velocity
   self.paddle:update(dt)
+  self.ball:update(dt)
+
+  -- detect collisions
+  -- reverse Y velocity if collision detected between paddle and ball
+  if self.ball:collides(self.paddle) then
+    self.ball.dy = -self.ball.dy
+    gSounds['paddle-hit']:play()
+  end
+
+  -- detect if ball goes below bounds of screen
+  if self.ball.y >= VIRTUAL_HEIGHT then
+    gSounds['hurt']:play()
+    self.ball:reset()
+  end
 end
 
 --[[
@@ -53,6 +81,9 @@ end
 function Play:render()
   -- render paddle
   self.paddle:render()
+
+  -- render ball
+  self.ball:render()
 
   -- pause text, if paused
   if self.paused then

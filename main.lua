@@ -56,7 +56,8 @@ function love.load()
   -- Quads we will generate for all of our textures; Quads allow us
   -- to show only part of a texture and not the entire thing
   gQuads = {
-    ['paddles'] = GenerateQuadsPaddles(gImages['main'])
+    ['paddles'] = GenerateQuadsPaddles(gImages['main']),
+    ['balls'] = GenerateQuadsBalls(gImages['main']),
   }
 
   -- initialize our virtual resolution, which will be rendered within our

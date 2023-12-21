@@ -53,6 +53,7 @@ end
   This function is specifically made to piece out the paddles from the
   sprite sheet. For this, we have to piece out the paddles a little more
   manually, since they are all different sizes.
+  @param {Image} atlas - the atlas to split into frames
 ]]
 function GenerateQuadsPaddles(atlas)
   local x = 0
@@ -82,6 +83,37 @@ function GenerateQuadsPaddles(atlas)
     -- prepare X and Y for the next set of paddles
     x = 0
     y = y + 32
+  end
+
+  return quads
+end
+
+--[[
+  This function is specifically made to piece out the balls from the
+  sprite sheet. For this, we have to piece out the balls a little more
+  manually, since they are in an awkward part of the sheet and small.
+  @param {Image} atlas - the atlas to split into frames
+]]
+function GenerateQuadsBalls(atlas)
+  local x = 96
+  local y = 48
+
+  local counter = 1
+  local quads = {}
+
+  for i = 0, 3 do
+    quads[counter] = love.graphics.newQuad(x, y, 8, 8, atlas:getDimensions())
+    x = x + 8
+    counter = counter + 1
+  end
+
+  x = 96
+  y = 56
+
+  for i = 0, 2 do
+    quads[counter] = love.graphics.newQuad(x, y, 8, 8, atlas:getDimensions())
+    x = x + 8
+    counter = counter + 1
   end
 
   return quads
