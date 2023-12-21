@@ -29,6 +29,9 @@ function Play:init()
   -- give the ball position in the center
   self.ball.x = VIRTUAL_WIDTH / 2 - 4
   self.ball.y = VIRTUAL_HEIGHT - 42
+
+  -- use the "static" createMap function to generate a bricks table
+  self.bricks = LevelMaker.createMap()
 end
 
 --[[
@@ -67,6 +70,15 @@ function Play:update(dt)
     gSounds['paddle-hit']:play()
   end
 
+  -- detect collision across all bricks with the ball
+  for _, brick in pairs(self.bricks) do
+    -- only check collision if brick is active
+    if brick.active and self.ball:collides(brick) then
+      -- trigger the brick's hit function, which deactivates it
+      brick:hit()
+    end
+  end
+
   -- detect if ball goes below bounds of screen
   if self.ball.y >= VIRTUAL_HEIGHT then
     gSounds['hurt']:play()
@@ -79,6 +91,11 @@ end
   game objects and more to the screen.
 ]]
 function Play:render()
+  -- render bricks
+  for _, brick in pairs(self.bricks) do
+    brick:render()
+  end
+
   -- render paddle
   self.paddle:render()
 

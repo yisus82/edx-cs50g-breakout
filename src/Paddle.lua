@@ -27,7 +27,7 @@ function Paddle:init()
 
   -- the skin only has the effect of changing our color, used to offset us
   -- into the gPaddleSkins table later
-  self.skin = 1
+  self.skin = math.random(4)
 
   -- the variant is which of the four paddle sizes we currently are; 2
   -- is the starting size, as the smallest is too tough to start with
