@@ -79,11 +79,11 @@ function Play:update(dt)
   for _, brick in pairs(self.bricks) do
     -- only check collision if brick is active
     if brick.active and self.ball:collides(brick) then
-      -- add to score
-      self.score = self.score + 10
-
       -- trigger the brick's hit function, which deactivates it
       brick:hit()
+
+      -- add to score
+      self.score = self.score + (brick.tier * 200 + brick.color * 25)
 
       -- we check to see if the opposite side of our ball is outside of the brick;
       -- if it is, we trigger a collision on that side; otherwise we're within the X + width of

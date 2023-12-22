@@ -206,7 +206,7 @@ end
 ]]
 function RenderHealth(health)
   -- start of our health rendering
-  local healthX = VIRTUAL_WIDTH - 100
+  local healthX = VIRTUAL_WIDTH / 2 - 50
 
   -- render health left
   for i = 1, health do
@@ -228,6 +228,5 @@ end
 ]]
 function RenderScore(score)
   love.graphics.setFont(gFonts['small'])
-  love.graphics.print('Score:', VIRTUAL_WIDTH - 60, 5)
-  love.graphics.printf(tostring(score), VIRTUAL_WIDTH - 50, 5, 40, 'right')
+  love.graphics.print('Score: ' .. tostring(score), VIRTUAL_WIDTH / 2, 5)
 end
