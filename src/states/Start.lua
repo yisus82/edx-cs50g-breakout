@@ -17,7 +17,13 @@ local menuItems = {
   [1] = {
     text = 'START',
     onSelect = function()
-      gStateMachine:change('Play')
+      gStateMachine:change('Serve', {
+        paddle = Paddle(1),
+        bricks = LevelMaker.createMap(1),
+        health = 3,
+        score = 0,
+        level = 1
+      })
     end
   },
   [2] = {

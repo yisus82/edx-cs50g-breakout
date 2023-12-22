@@ -35,7 +35,9 @@ require 'src/StateMachine'
 -- its own update and render methods that can be called by our state machine
 -- each frame, to avoid bulky code in main.lua
 require 'src/states/Base'
+require 'src/states/GameOver'
 require 'src/states/Play'
+require 'src/states/Serve'
 require 'src/states/Start'
 
 -- utility functions, mainly for splitting our sprite sheet into various Quads

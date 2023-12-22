@@ -59,6 +59,7 @@ function love.load()
     ['paddles'] = GenerateQuadsPaddles(gImages['main']),
     ['balls'] = GenerateQuadsBalls(gImages['main']),
     ['bricks'] = GenerateQuadsBricks(gImages['main']),
+    ['hearts'] = GenerateQuads(gImages['hearts'], 10, 9),
   }
 
   -- initialize our virtual resolution, which will be rendered within our
@@ -104,7 +105,9 @@ function love.load()
   -- 6. 'GameOver' (the player has lost; display score and allow restart)
   gStateMachine = StateMachine {
     ['Start'] = function() return Start() end,
+    ['Serve'] = function() return Serve() end,
     ['Play'] = function() return Play() end,
+    ['GameOver'] = function() return GameOver() end,
   }
   gStateMachine:change('Start')
 
@@ -194,4 +197,37 @@ function love.draw()
 
   -- end our drawing with push, pushing it to the screen
   push:apply('end')
+end
+
+--[[
+  Renders hearts based on how much health the player has. First renders
+  full hearts, then empty hearts for however much health we're missing.
+  @param {number} health - the player's current health
+]]
+function RenderHealth(health)
+  -- start of our health rendering
+  local healthX = VIRTUAL_WIDTH - 100
+
+  -- render health left
+  for i = 1, health do
+    love.graphics.draw(gImages['hearts'], gQuads['hearts'][1], healthX, 4)
+    healthX = healthX + 11
+  end
+
+  -- render missing health
+  for i = 1, 3 - health do
+    love.graphics.draw(gImages['hearts'], gQuads['hearts'][2], healthX, 4)
+    healthX = healthX + 11
+  end
+end
+
+--[[
+  Simply renders the player's score at the top right, with left-side padding
+  for the score number.
+  @param {number} score - the player's current score
+]]
+function RenderScore(score)
+  love.graphics.setFont(gFonts['small'])
+  love.graphics.print('Score:', VIRTUAL_WIDTH - 60, 5)
+  love.graphics.printf(tostring(score), VIRTUAL_WIDTH - 50, 5, 40, 'right')
 end

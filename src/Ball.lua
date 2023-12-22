@@ -50,14 +50,13 @@ function Ball:collides(target)
 end
 
 --[[
-  Places the ball in the middle of the screen, with no movement and with a random skin.
+  Places the ball in the middle of the screen, with no movement.
 ]]
 function Ball:reset()
   self.x = VIRTUAL_WIDTH / 2 - 2
   self.y = VIRTUAL_HEIGHT / 2 - 2
   self.dx = 0
   self.dy = 0
-  self.skin = math.random(7)
 end
 
 --[[

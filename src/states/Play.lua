@@ -11,27 +11,19 @@ Play = Class { __includes = Base }
 --[[
   We initialize what's in our Play state.
   Called once when we first enter the state.
+  @param {table} params - contains the paddle we're controlling, the ball and the bricks in our game, and the
+    health and score when we're transitioning from another state
 ]]
-function Play:init()
-  -- in the beginning, the game is not paused
-  self.paused = false
+function Play:enter(params)
+  self.paddle = params.paddle
+  self.bricks = params.bricks
+  self.health = params.health
+  self.score = params.score
+  self.ball = params.ball
 
-  -- initialize our paddle
-  self.paddle = Paddle()
-
-  -- initialize our ball with a random skin
-  self.ball = Ball(math.random(7))
-
-  -- give the ball random starting velocity
+  -- give ball random starting velocity
   self.ball.dx = math.random(-200, 200)
   self.ball.dy = math.random(-50, -60)
-
-  -- give the ball position in the center
-  self.ball.x = VIRTUAL_WIDTH / 2 - 4
-  self.ball.y = VIRTUAL_HEIGHT - 42
-
-  -- use the "static" createMap function to generate a bricks table
-  self.bricks = LevelMaker.createMap()
 end
 
 --[[
@@ -87,6 +79,9 @@ function Play:update(dt)
   for _, brick in pairs(self.bricks) do
     -- only check collision if brick is active
     if brick.active and self.ball:collides(brick) then
+      -- add to score
+      self.score = self.score + 10
+
       -- trigger the brick's hit function, which deactivates it
       brick:hit()
 
@@ -124,6 +119,27 @@ function Play:update(dt)
       break
     end
   end
+
+  -- check if ball goes below bounds
+  if self.ball.y >= VIRTUAL_HEIGHT then
+    -- decrease health and play sound
+    self.health = self.health - 1
+    gSounds['hurt']:play()
+
+    -- if health is 0, game is over, otherwise go to serve state
+    if self.health == 0 then
+      gStateMachine:change('GameOver', {
+        score = self.score
+      })
+    else
+      gStateMachine:change('Serve', {
+        paddle = self.paddle,
+        bricks = self.bricks,
+        health = self.health,
+        score = self.score
+      })
+    end
+  end
 end
 
 --[[
@@ -141,6 +157,10 @@ function Play:render()
 
   -- render ball
   self.ball:render()
+
+  -- render score and health
+  RenderScore(self.score)
+  RenderHealth(self.health)
 
   -- pause text, if paused
   if self.paused then
