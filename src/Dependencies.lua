@@ -36,6 +36,7 @@ require 'src/StateMachine'
 -- each frame, to avoid bulky code in main.lua
 require 'src/states/Base'
 require 'src/states/GameOver'
+require 'src/states/HighScores'
 require 'src/states/Play'
 require 'src/states/Serve'
 require 'src/states/Start'

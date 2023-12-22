@@ -109,6 +109,7 @@ function love.load()
     ['Play'] = function() return Play() end,
     ['Victory'] = function() return Victory() end,
     ['GameOver'] = function() return GameOver() end,
+    ['HighScores'] = function() return HighScores() end,
   }
   gStateMachine:change('Start')
 
@@ -238,4 +239,56 @@ end
 function RenderLevel(level)
   love.graphics.setFont(gFonts['small'])
   love.graphics.printf('Level: ' .. tostring(level), 0, VIRTUAL_HEIGHT - 8, VIRTUAL_WIDTH, 'center')
+end
+
+--[[
+  Loads high scores from a .lst file, saved in LÖVE2D's default save directory in a subfolder
+  called 'breakout'.
+]]
+function LoadHighScores()
+  -- set the write directory
+  love.filesystem.setIdentity('breakout')
+
+  -- if the file doesn't exist, initialize it with some default scores
+  if not love.filesystem.getInfo('breakout.lst') then
+    local scores = ''
+    for i = 10, 1, -1 do
+      scores = scores .. 'BREAKOUT\n'
+      scores = scores .. tostring(i * 100) .. '\n'
+    end
+
+    love.filesystem.write('breakout.lst', scores)
+  end
+
+  -- flag for whether we're reading a name or not
+  local name = true
+
+  -- counter for the high scores
+  local counter = 1
+
+  -- initialize scores table with at least 10 blank entries
+  local scores = {}
+
+  for i = 1, 10 do
+    -- blank table; each will hold a name and a score
+    scores[i] = {
+      name = nil,
+      score = nil
+    }
+  end
+
+  -- iterate over each line in the file, filling in names and scores
+  for line in love.filesystem.lines('breakout.lst') do
+    if name then
+      scores[counter].name = string.sub(line, 1, 10)
+    else
+      scores[counter].score = tonumber(line)
+      counter = counter + 1
+    end
+
+    -- flip the name flag
+    name = not name
+  end
+
+  return scores
 end

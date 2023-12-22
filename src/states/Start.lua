@@ -10,26 +10,39 @@
 Start = Class { __includes = Base }
 
 -- our highlighted menu item
-local highlighted = 1
+local highlighted
 
 -- our menu items
-local menuItems = {
-  [1] = {
-    text = 'START',
-    onSelect = function()
-      gStateMachine:change('Serve', {
-        paddle = Paddle(1),
-        bricks = LevelMaker:createMap(1),
-        health = 3,
-        score = 0,
-        level = 1
-      })
-    end
-  },
-  [2] = {
-    text = 'HIGH SCORES',
+local menuItems
+
+--[[
+  Called when we first initialize our state.
+]]
+function Start:init()
+  highlighted = 1
+  menuItems = {
+    [1] = {
+      text = 'START',
+      onSelect = function()
+        gStateMachine:change('Serve', {
+          paddle = Paddle(1),
+          bricks = LevelMaker:createMap(1),
+          health = 3,
+          score = 0,
+          level = 1
+        })
+      end
+    },
+    [2] = {
+      text = 'HIGH SCORES',
+      onSelect = function()
+        gStateMachine:change('HighScores', {
+          highScores = LoadHighScores()
+        })
+      end
+    }
   }
-}
+end
 
 --[[
   Update the highlighted menu item if we press an arrow key up or down
