@@ -11,7 +11,7 @@ Serve = Class { __includes = Base }
 --[[
   Called when we first enter the Serve state.
   @param {table} params - contains the paddle we're controlling and the bricks in our game, and the
-    health and score when we're transitioning from another state
+    health and score when we're transitioning from another state, and the level we're on
 ]]
 function Serve:enter(params)
   -- grab game state from params
@@ -19,6 +19,7 @@ function Serve:enter(params)
   self.bricks = params.bricks
   self.health = params.health
   self.score = params.score
+  self.level = params.level
 
   -- init new ball (random color for fun)
   self.ball = Ball()
@@ -42,7 +43,8 @@ function Serve:update(dt)
       bricks = self.bricks,
       health = self.health,
       score = self.score,
-      ball = self.ball
+      ball = self.ball,
+      level = self.level
     })
   end
 
@@ -65,9 +67,10 @@ function Serve:render()
     brick:render()
   end
 
-  -- render score and health
+  -- render score, health and level
   RenderScore(self.score)
   RenderHealth(self.health)
+  RenderLevel(self.level)
 
   -- instructions
   love.graphics.setFont(gFonts['medium'])

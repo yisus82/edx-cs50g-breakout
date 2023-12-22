@@ -39,6 +39,7 @@ require 'src/states/GameOver'
 require 'src/states/Play'
 require 'src/states/Serve'
 require 'src/states/Start'
+require 'src/states/Victory'
 
 -- utility functions, mainly for splitting our sprite sheet into various Quads
 -- of differing sizes for paddles, balls, bricks, etc.

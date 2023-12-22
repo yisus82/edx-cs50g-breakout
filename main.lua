@@ -107,6 +107,7 @@ function love.load()
     ['Start'] = function() return Start() end,
     ['Serve'] = function() return Serve() end,
     ['Play'] = function() return Play() end,
+    ['Victory'] = function() return Victory() end,
     ['GameOver'] = function() return GameOver() end,
   }
   gStateMachine:change('Start')
@@ -229,4 +230,12 @@ end
 function RenderScore(score)
   love.graphics.setFont(gFonts['small'])
   love.graphics.print('Score: ' .. tostring(score), VIRTUAL_WIDTH / 2, 5)
+end
+
+--[[
+  Renders the crrent level at the bottom center of the screen.
+]]
+function RenderLevel(level)
+  love.graphics.setFont(gFonts['small'])
+  love.graphics.printf('Level: ' .. tostring(level), 0, VIRTUAL_HEIGHT - 8, VIRTUAL_WIDTH, 'center')
 end

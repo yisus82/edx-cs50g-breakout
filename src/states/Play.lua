@@ -12,7 +12,7 @@ Play = Class { __includes = Base }
   We initialize what's in our Play state.
   Called once when we first enter the state.
   @param {table} params - contains the paddle we're controlling, the ball and the bricks in our game, and the
-    health and score when we're transitioning from another state
+    health and score when we're transitioning from another state, and the level we're on
 ]]
 function Play:enter(params)
   self.paddle = params.paddle
@@ -20,6 +20,7 @@ function Play:enter(params)
   self.health = params.health
   self.score = params.score
   self.ball = params.ball
+  self.level = params.level
 
   -- give ball random starting velocity
   self.ball.dx = math.random(-200, 200)
@@ -82,6 +83,18 @@ function Play:update(dt)
       -- trigger the brick's hit function, which deactivates it
       brick:hit()
 
+      -- check victory
+      if self:checkVictory() then
+        gSounds['victory']:play()
+        gStateMachine:change('Victory', {
+          level = self.level,
+          paddle = self.paddle,
+          health = self.health,
+          score = self.score,
+          ball = self.ball
+        })
+      end
+
       -- add to score
       self.score = self.score + (brick.tier * 200 + brick.color * 25)
 
@@ -136,7 +149,8 @@ function Play:update(dt)
         paddle = self.paddle,
         bricks = self.bricks,
         health = self.health,
-        score = self.score
+        score = self.score,
+        level = self.level,
       })
     end
   end
@@ -168,13 +182,27 @@ function Play:render()
   -- render ball
   self.ball:render()
 
-  -- render score and health
+  -- render score, health and level
   RenderScore(self.score)
   RenderHealth(self.health)
+  RenderLevel(self.level)
 
   -- pause text, if paused
   if self.paused then
     love.graphics.setFont(gFonts['large'])
     love.graphics.printf("PAUSED", 0, VIRTUAL_HEIGHT / 2 - 16, VIRTUAL_WIDTH, 'center')
   end
+end
+
+--[[
+  Checks whether the player has clear the level, by checking if all the bricks are inactive.
+]]
+function Play:checkVictory()
+  for _, brick in pairs(self.bricks) do
+    if brick.active then
+      return false
+    end
+  end
+
+  return true
 end
