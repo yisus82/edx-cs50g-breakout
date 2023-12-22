@@ -140,6 +140,11 @@ function Play:update(dt)
       })
     end
   end
+
+  -- for rendering brick particle systems
+  for _, brick in pairs(self.bricks) do
+    brick:update(dt)
+  end
 end
 
 --[[
@@ -150,6 +155,11 @@ function Play:render()
   -- render bricks
   for _, brick in pairs(self.bricks) do
     brick:render()
+  end
+
+  -- render brick particle systems
+  for _, brick in pairs(self.bricks) do
+    brick:renderParticles()
   end
 
   -- render paddle
