@@ -8,10 +8,11 @@ GameOver = Class { __includes = Base }
 
 --[[
   Called when we first enter the GameOver state.
-  @param {table} params - contains the score from the previous state
+  @param {table} params - contains the score from the previous state and the high scores table
 ]]
 function GameOver:enter(params)
   self.score = params.score
+  self.highScores = params.highScores
 end
 
 --[[
@@ -21,7 +22,30 @@ end
 function GameOver:update(dt)
   -- if we press enter, go back to the start screen
   if love.keyboard.wasPressed('enter') or love.keyboard.wasPressed('return') then
-    gStateMachine:change('Start')
+    -- see if score is higher than any in the high scores table
+    local highScore = false
+
+    -- keep track of what high score ours overwrites, if any
+    local highScoreIndex = 11
+
+    for i = 10, 1, -1 do
+      local score = self.highScores[i].score or 0
+      if self.score > score then
+        highScoreIndex = i
+        highScore = true
+      end
+    end
+
+    if highScore then
+      gSounds['high-score']:play()
+      gStateMachine:change('EnterHighScore', {
+        highScores = self.highScores,
+        score = self.score,
+        scoreIndex = highScoreIndex
+      })
+    else
+      gStateMachine:change('Start')
+    end
   end
 
   -- exit game if we press escape

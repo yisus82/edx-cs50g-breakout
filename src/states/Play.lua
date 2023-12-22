@@ -142,7 +142,8 @@ function Play:update(dt)
     -- if health is 0, game is over, otherwise go to serve state
     if self.health == 0 then
       gStateMachine:change('GameOver', {
-        score = self.score
+        score = self.score,
+        highScores = LoadHighScores()
       })
     else
       gStateMachine:change('Serve', {

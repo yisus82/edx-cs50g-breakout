@@ -110,6 +110,7 @@ function love.load()
     ['Victory'] = function() return Victory() end,
     ['GameOver'] = function() return GameOver() end,
     ['HighScores'] = function() return HighScores() end,
+    ['EnterHighScore'] = function() return EnterHighScore() end,
   }
   gStateMachine:change('Start')
 
