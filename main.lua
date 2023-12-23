@@ -104,6 +104,8 @@ function love.load()
   -- 4. 'Play' (the ball is in play, bouncing between paddles)
   -- 5. 'Victory' (the current level is over, with a victory jingle)
   -- 6. 'GameOver' (the player has lost; display score and allow restart)
+  -- 7. 'HighScores' (where can can see the high scores)
+  -- 8. 'EnterHighScore' (where we can enter our name when we get a high score)
   gStateMachine = StateMachine {
     ['Start'] = function() return Start() end,
     ['PaddleSelect'] = function() return PaddleSelect() end,
@@ -115,6 +117,10 @@ function love.load()
     ['EnterHighScore'] = function() return EnterHighScore() end,
   }
   gStateMachine:change('Start')
+
+  -- play our music outside of all states and set it to looping
+  gSounds['music']:play()
+  gSounds['music']:setLooping(true)
 
   -- a table we'll use to keep track of which keys have been pressed this
   -- frame, to get around the fact that LÖVE's default callback won't let us
