@@ -10,8 +10,9 @@ Paddle = Class {}
 --[[
   Our Paddle will initialize at the same spot every time, in the middle
   of the world horizontally, toward the bottom.
+  @param {number} skin - the skin for our paddle
 ]]
-function Paddle:init()
+function Paddle:init(skin)
   -- x is placed in the middle
   self.x = VIRTUAL_WIDTH / 2 - 32
 
@@ -25,9 +26,8 @@ function Paddle:init()
   self.width = 64
   self.height = 16
 
-  -- the skin only has the effect of changing our color, used to offset us
-  -- into the gPaddleSkins table later
-  self.skin = math.random(4)
+  -- the skin only has the effect of changing our color
+  self.skin = skin
 
   -- the variant is which of the four paddle sizes we currently are; 2
   -- is the starting size, as the smallest is too tough to start with

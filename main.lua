@@ -60,6 +60,7 @@ function love.load()
     ['balls'] = GenerateQuadsBalls(gImages['main']),
     ['bricks'] = GenerateQuadsBricks(gImages['main']),
     ['hearts'] = GenerateQuads(gImages['hearts'], 10, 9),
+    ['arrows'] = GenerateQuads(gImages['arrows'], 24, 24)
   }
 
   -- initialize our virtual resolution, which will be rendered within our
@@ -105,6 +106,7 @@ function love.load()
   -- 6. 'GameOver' (the player has lost; display score and allow restart)
   gStateMachine = StateMachine {
     ['Start'] = function() return Start() end,
+    ['PaddleSelect'] = function() return PaddleSelect() end,
     ['Serve'] = function() return Serve() end,
     ['Play'] = function() return Play() end,
     ['Victory'] = function() return Victory() end,
